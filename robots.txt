@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://tshaipoo.com/sitemap.xml
