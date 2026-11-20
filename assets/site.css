@@ -29,6 +29,8 @@ h2 { font-size: clamp(1.45rem, 2.8vw, 2.3rem); letter-spacing: .015em; }
 .header-inner { min-height: 85px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
 .brand { display: inline-flex; align-items: center; gap: 12px; font: 900 1.54rem/1.08 var(--serif); text-decoration: none; white-space: nowrap; letter-spacing: .06em; }
 .brand small { display: block; margin-top: 6px; font: 600 .65rem/1.2 sans-serif; letter-spacing: .15em; }
+.brand-logo { width: 44px; height: 44px; object-fit: contain; display: block; flex-shrink: 0; transition: transform .2s ease, filter .2s ease; }
+.brand:hover .brand-logo { transform: scale(1.05); filter: drop-shadow(0 2px 6px rgba(183, 70, 36, 0.25)); }
 .stamp { display: grid; place-content: center; width: 40px; height: 40px; border: 1px solid var(--accent); outline: 1px solid var(--accent); outline-offset: -4px; color: var(--accent); font-size: 12px; letter-spacing: 0; }
 .site-nav { display: flex; align-items: center; gap: clamp(1rem, 3.2vw, 3rem); }
 .site-nav a, .contact-link, .footer a { text-decoration: none; font-size: .9rem; font-weight: 650; white-space: nowrap; }
@@ -63,7 +65,10 @@ h1 { font-size: clamp(2rem, 4.15vw, 4rem); letter-spacing: .035em; }
 .contact h2 { font-size: clamp(1.4rem, 2.45vw, 2rem); }
 .contact h2 + p { margin-top: .8rem; }
 .contact-actions { display: flex; gap: .65rem; flex-wrap: wrap; }
-.footer { display: flex; justify-content: space-between; gap: 1rem; padding-block: 20px; font-size: .82rem; color: var(--muted); }
+.footer { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding-block: 22px; font-size: .85rem; color: var(--muted); }
+.footer-brand { display: flex; align-items: center; gap: 10px; }
+.footer-logo { width: 34px; height: 34px; object-fit: contain; flex-shrink: 0; transition: transform .2s ease; }
+.footer-brand:hover .footer-logo { transform: scale(1.08); }
 @media (max-width: 920px) {
   .wrap { width: calc(100% - 64px); }
   .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -169,6 +174,9 @@ h1 { font-size: clamp(2rem, 4.15vw, 4rem); letter-spacing: .035em; }
 .process-copy p { color: var(--muted); margin-top: .65rem; max-width: 46em; }
 .process-visual { display: grid; gap: 1rem; }
 .explainer { padding: clamp(.85rem, 2.4vw, 1.5rem); background: #faf4e8; border: 1px solid #d7c4aa; }
+.explainer.process-video-card { padding: .5rem; }
+.explainer.process-video-card video { width: 100%; height: auto; display: block; border-radius: 2px; }
+.explainer.process-video-card figcaption { font-size: .88rem; font-weight: normal; font-family: inherit; color: var(--muted); text-align: center; margin-top: .45rem; }
 .explainer figcaption { font: 800 clamp(1.12rem, 2vw, 1.4rem)/1.4 var(--serif); }
 .explainer p { margin-top: .85rem; color: var(--muted); font-size: .9rem; }
 .diagram-pair { display: flex; align-items: stretch; gap: .75rem; margin-top: .9rem; }
@@ -204,95 +212,245 @@ h1 { font-size: clamp(2rem, 4.15vw, 4rem); letter-spacing: .035em; }
   .process-facts dd { font-size: .8rem; }
 }
 
-/* Dynamic Floating Story TOC */
+/* Stories & Recipes Page Docs Layout (做在 section 內部的雙欄佈局) */
 .stories-page {
   scroll-behavior: smooth;
 }
-.story-sticky-nav {
-  display: none;
+.docs-layout-section {
+  padding-block: clamp(2rem, 4vw, 4rem);
 }
-@media (min-width: 1760px) {
-  .story-sticky-nav {
-    display: block;
+.docs-layout-grid {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  gap: clamp(1.8rem, 3.5vw, 3rem);
+  align-items: start;
+}
+.stories-docs-grid {
+  grid-template-columns: 290px minmax(0, 1fr);
+}
+
+/* 桌面左側 Sticky TOC (位於 section 內部) */
+.docs-sidebar {
+  position: sticky;
+  top: 1.5rem;
+  max-height: calc(100vh - 3rem);
+  overflow-y: auto;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 1.15rem 1rem 1.25rem;
+  box-shadow: 0 4px 18px -4px rgba(41, 29, 22, 0.06);
+}
+.docs-sidebar-header {
+  font-size: .8rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: .85rem;
+  padding-bottom: .45rem;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.docs-sidebar-close {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  line-height: 1;
+  color: var(--muted);
+  cursor: pointer;
+  padding: .2rem .35rem;
+}
+.docs-sidebar-close:hover {
+  color: var(--ink);
+}
+.docs-nav-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: .25rem;
+}
+.docs-nav-list a {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  font-size: .86rem;
+  font-weight: 600;
+  color: var(--muted);
+  text-decoration: none;
+  padding: .42rem .55rem;
+  border-radius: 5px;
+  border-left: 3px solid transparent;
+  transition: all .16s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.docs-nav-list a:hover {
+  color: var(--ink);
+  background: #eee1ce;
+}
+.docs-nav-list a.active {
+  color: var(--accent);
+  background: #eeddc6;
+  font-weight: 750;
+  border-left: 3px solid var(--accent);
+}
+.docs-nav-tag {
+  font-size: .7rem;
+  background: #dfcfbc;
+  color: var(--ink);
+  padding: .06rem .3rem;
+  border-radius: 3px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.docs-nav-list a.active .docs-nav-tag {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* 雙欄導覽樣式 (小故事導覽專用) */
+.docs-nav-dual {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .3rem .45rem;
+}
+.docs-nav-dual a {
+  padding: .35rem .38rem;
+  font-size: .82rem;
+  gap: .35rem;
+}
+.docs-nav-dual .docs-nav-tag {
+  font-size: .66rem;
+  padding: .05rem .22rem;
+}
+
+/* 右側主內容流 (Stories & Recipes) */
+.docs-main-stream {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  min-width: 0;
+}
+.doc-entry-card {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: clamp(1.4rem, 3.5vw, 2.5rem);
+  box-shadow: 0 4px 18px -4px rgba(41, 29, 22, 0.05);
+  scroll-margin-top: 1.5rem;
+}
+.doc-entry-card:not(:has(.recipe-visual)) .recipe-grid {
+  display: block;
+}
+.doc-entry-card:not(:has(.recipe-visual)) .prose {
+  max-width: 100%;
+}
+.doc-entry-card.alt-bg {
+  background: #efe6d7;
+}
+
+/* 手機與窄螢幕快速導覽按鈕 (< 1076px) */
+.story-nav-toggle-btn {
+  display: none;
+  position: fixed;
+  left: 1.25rem;
+  bottom: 1.5rem;
+  z-index: 99;
+  background: var(--ink);
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  padding: .65rem 1.15rem;
+  font-size: .85rem;
+  font-weight: 700;
+  letter-spacing: .05em;
+  box-shadow: 0 4px 16px rgba(47, 32, 25, 0.28);
+  cursor: pointer;
+  align-items: center;
+  gap: .45rem;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(15px);
+  transition: opacity .25s ease, transform .25s ease;
+}
+.story-nav-toggle-btn.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+.story-nav-toggle-btn:hover {
+  background: var(--accent);
+}
+.story-nav-toggle-btn svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+/* 遮罩背景 (手機打開選單時) */
+.story-nav-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(41, 29, 22, 0.45);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  z-index: 101;
+  opacity: 0;
+  transition: opacity .25s ease;
+}
+.story-nav-backdrop.open {
+  display: block;
+  opacity: 1;
+}
+
+/* 響應式調整：在螢幕 < 1076px 時，側邊欄收起，由浮動按鈕呼叫 drawer */
+@media (max-width: 1075px) {
+  .docs-layout-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .story-nav-toggle-btn {
+    display: flex;
+  }
+  .docs-sidebar {
     position: fixed;
-    right: clamp(1rem, 2vw, 2.2rem);
-    top: 50%;
-    transform: translateY(-50%) translateX(20px);
-    width: 250px;
-    max-height: 85vh;
+    left: 1rem;
+    right: 1rem;
+    bottom: 4.8rem;
+    top: auto;
+    max-height: 60vh;
     overflow-y: auto;
-    background: rgba(247, 241, 231, 0.95);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    padding: .85rem .75rem;
-    box-shadow: 0 10px 25px -5px rgba(41, 29, 22, 0.08);
-    z-index: 100;
+    border-radius: 12px;
+    padding: 1.1rem 1rem 1rem;
     opacity: 0;
     pointer-events: none;
-    transition: opacity .3s ease, transform .3s ease;
+    transform: translateY(20px) scale(0.96);
+    z-index: 102;
+    box-shadow: 0 10px 30px -5px rgba(41, 29, 22, 0.25);
+    background: rgba(247, 241, 231, 0.98);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: opacity .25s ease, transform .25s ease;
   }
-  .story-sticky-nav.visible {
+  .docs-sidebar.drawer-open {
     opacity: 1;
     pointer-events: auto;
-    transform: translateY(-50%) translateX(0);
+    transform: translateY(0) scale(1);
   }
-  .story-sticky-nav-title {
-    font-size: .78rem;
-    font-weight: 750;
-    color: var(--accent);
-    letter-spacing: .08em;
-    padding: 0 .4rem .5rem;
-    border-bottom: 1px solid var(--line);
-    margin-bottom: .5rem;
+  .docs-sidebar-close {
+    display: block;
   }
-  .story-sticky-nav ol {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+  .docs-nav-list {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4px 6px;
-  }
-  .story-sticky-nav a {
-    display: flex;
-    align-items: center;
-    gap: .35rem;
-    font-size: .8rem;
-    font-weight: 600;
-    color: var(--muted);
-    text-decoration: none;
-    padding: .3rem .35rem;
-    border-radius: 4px;
-    border-left: 2px solid transparent;
-    transition: all .18s ease;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .story-sticky-nav a:hover {
-    color: var(--ink);
-    background: #ede1ce;
-  }
-  .story-sticky-nav a.active {
-    color: var(--accent);
-    background: #eeddc6;
-    font-weight: 750;
-    border-left: 2px solid var(--accent);
-  }
-  .story-sticky-nav-tag {
-    font-size: .68rem;
-    background: #dfcfbc;
-    color: var(--ink);
-    padding: .05rem .25rem;
-    border-radius: 3px;
-    font-weight: 700;
-    flex-shrink: 0;
-  }
-  .story-sticky-nav a.active .story-sticky-nav-tag {
-    background: var(--accent);
-    color: #fff;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 6px;
   }
 }
 
@@ -436,6 +594,97 @@ h1 { font-size: clamp(2rem, 4.15vw, 4rem); letter-spacing: .035em; }
   border: 1px solid var(--line);
   box-shadow: 0 8px 24px -6px rgba(41, 29, 22, 0.1);
   background: var(--paper);
+  transition: transform .2s ease, box-shadow .2s ease;
+  width: 100%;
+  display: block;
+  cursor: zoom-in;
+}
+.recipe-visual video {
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  box-shadow: 0 8px 24px -6px rgba(41, 29, 22, 0.1);
+  background: var(--paper);
+  transition: transform .2s ease, box-shadow .2s ease;
+  display: block;
+}
+.recipe-visual img:hover,
+.recipe-visual video:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px -6px rgba(41, 29, 22, 0.16);
+}
+
+/* Lightbox Modal (食譜圖片放大燈箱) */
+.recipe-lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(29, 18, 12, 0.88);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  opacity: 0;
+  transition: opacity .25s ease;
+  cursor: zoom-out;
+}
+.recipe-lightbox.active {
+  display: flex;
+  opacity: 1;
+}
+.recipe-lightbox-content {
+  position: relative;
+  max-width: min(92vw, 1080px);
+  max-height: min(90vh, 850px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: default;
+}
+.recipe-lightbox-img {
+  max-width: 100%;
+  max-height: calc(85vh - 3rem);
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  transform: scale(0.96);
+  transition: transform .25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.recipe-lightbox.active .recipe-lightbox-img {
+  transform: scale(1);
+}
+.recipe-lightbox-caption {
+  margin-top: .85rem;
+  color: #fff4e4;
+  font-size: .95rem;
+  font-weight: 600;
+  letter-spacing: .03em;
+  text-align: center;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+}
+.recipe-lightbox-close {
+  position: absolute;
+  top: -2.5rem;
+  right: 0;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.8rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: .3rem .6rem;
+  opacity: .85;
+  transition: opacity .15s ease, transform .15s ease;
+}
+.recipe-lightbox-close:hover {
+  opacity: 1;
+  transform: scale(1.1);
 }
 .recipe-visual figcaption {
   margin-top: .6rem;
@@ -454,7 +703,6 @@ h1 { font-size: clamp(2rem, 4.15vw, 4rem); letter-spacing: .035em; }
   background: var(--paper);
   border: 1px solid var(--line);
   border-radius: 4px;
-  table-layout: fixed;
 }
 .recipe-table th, .recipe-table td {
   padding: .6rem .85rem;
@@ -464,11 +712,19 @@ h1 { font-size: clamp(2rem, 4.15vw, 4rem); letter-spacing: .035em; }
 }
 .recipe-table th:first-child,
 .recipe-table td:first-child {
-  width: 30%;
+  width: 1%;
+  white-space: nowrap;
+  vertical-align: top;
+  text-align: center;
+  font-weight: 600;
+  color: var(--ink);
+  border-right: 1px solid var(--line);
 }
 .recipe-table th:last-child,
 .recipe-table td:last-child {
-  width: 70%;
+  width: auto;
+  white-space: normal;
+  word-break: break-word;
 }
 .recipe-table th {
   background: #ede2d1;
@@ -515,8 +771,12 @@ h1 { font-size: clamp(2rem, 4.15vw, 4rem); letter-spacing: .035em; }
 .genuine-feature-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
-  align-items: center;
+  align-items: start;
   gap: clamp(1.5rem, 4vw, 3.5rem);
+}
+.genuine-feature-visual {
+  position: sticky;
+  top: 2rem;
 }
 .genuine-feature-visual img,
 .genuine-feature-visual video {
@@ -535,11 +795,16 @@ h1 { font-size: clamp(2rem, 4.15vw, 4rem); letter-spacing: .035em; }
   color: var(--muted);
   text-align: center;
 }
+.genuine-aged-page .wrap:not(.genuine-feature-grid) .prose,
+.genuine-aged-page section:not(:has(.genuine-feature-visual)) .prose {
+  max-width: 100%;
+}
 @media (max-width: 760px) {
   .genuine-feature-grid {
     grid-template-columns: minmax(0, 1fr);
   }
   .genuine-feature-visual {
+    position: static;
     max-width: 24rem;
     margin-inline: auto;
     width: 100%;
@@ -555,5 +820,81 @@ h1 { font-size: clamp(2rem, 4.15vw, 4rem); letter-spacing: .035em; }
     max-width: 24rem;
     margin-inline: auto;
     width: 100%;
+  }
+}
+
+/* Brand Identity Section (about.html) */
+.brand-identity-section {
+  background: #f7f1e7;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.brand-identity-grid {
+  display: grid;
+  grid-template-columns: minmax(260px, 340px) 1fr;
+  align-items: center;
+  gap: clamp(2rem, 5vw, 4rem);
+  margin-top: 2rem;
+}
+.brand-identity-visual {
+  background: var(--paper, #fffdfa);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 2.2rem 1.8rem;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(47, 32, 25, 0.05);
+}
+.brand-identity-visual img {
+  max-width: 220px;
+  width: 100%;
+  height: auto;
+  margin: 0 auto;
+  display: block;
+}
+.brand-identity-caption {
+  margin-top: 1.2rem;
+  font: 700 .85rem/1.4 var(--sans);
+  color: var(--muted);
+  letter-spacing: .08em;
+}
+.brand-elements {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+.brand-element-item {
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 1.25rem 1.5rem;
+  border-left: 4px solid var(--accent);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.brand-element-item:hover {
+  transform: translateX(4px);
+  box-shadow: 0 3px 12px rgba(47, 32, 25, 0.06);
+}
+.brand-element-item h3 {
+  font-size: 1.15rem;
+  margin-bottom: .4rem;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.brand-element-item p {
+  color: var(--muted);
+  font-size: .95rem;
+  line-height: 1.6;
+  margin: 0;
+}
+@media (max-width: 768px) {
+  .brand-identity-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .brand-identity-visual {
+    max-width: 300px;
+    margin: 0 auto;
   }
 }
