@@ -174,7 +174,7 @@
       </div>
     </section>
   </main>
-  <footer class="site-footer"><div class="wrap footer"><div class="footer-brand"><img class="footer-logo" src="assets/logo-seal.png" alt="菜脯埕" width="34" height="34" loading="lazy"><div><strong>菜脯埕</strong><span> 臺中清水・在地耕作</span></div></div><div><a href="contact.html">聯絡菜脯埕</a> <a href="#top">回到頁首 ↑</a></div></div></footer>
+  <footer class="site-footer"><div class="wrap footer"><div class="footer-brand"><img class="footer-logo" src="assets/logo-seal.png" alt="菜脯埕" width="34" height="34" loading="lazy"><div><strong>菜脯埕</strong><span> 臺中清水・在地耕作</span></div></div><div><a href="contact.html">聯絡菜脯埕</a></div></div></footer>
 
   <script>
     (function () {
@@ -277,8 +277,12 @@
       function closeLightbox() {
         lightbox.classList.remove('active');
         lightbox.setAttribute('aria-hidden', 'true');
-        lightboxImg.src = '';
         document.body.style.overflow = '';
+        setTimeout(() => {
+          if (!lightbox.classList.contains('active')) {
+            lightboxImg.src = '';
+          }
+        }, 350);
       }
 
       document.querySelectorAll('.recipe-visual img').forEach(img => {
@@ -298,5 +302,7 @@
       });
     })();
   </script>
+  <button type="button" class="back-to-top" id="backToTop" aria-label="回到頁面頂端" title="回到頂端"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 15l-6-6-6 6" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  <script src="assets/site.js" defer></script>
 </body>
 </html>

@@ -617,23 +617,26 @@ h1 { font-size: clamp(2rem, 4.15vw, 4rem); letter-spacing: .035em; }
 
 /* Lightbox Modal (食譜圖片放大燈箱) */
 .recipe-lightbox {
-  display: none;
   position: fixed;
   inset: 0;
   z-index: 9999;
-  background: rgba(29, 18, 12, 0.88);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  background: rgba(22, 14, 9, 0.88);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
   align-items: center;
   justify-content: center;
   padding: 1.5rem;
   opacity: 0;
-  transition: opacity .25s ease;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity .35s cubic-bezier(0.16, 1, 0.3, 1), visibility .35s ease;
   cursor: zoom-out;
 }
 .recipe-lightbox.active {
-  display: flex;
   opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
 }
 .recipe-lightbox-content {
   position: relative;
@@ -643,6 +646,13 @@ h1 { font-size: clamp(2rem, 4.15vw, 4rem); letter-spacing: .035em; }
   flex-direction: column;
   align-items: center;
   cursor: default;
+  transform: scale(0.92) translateY(14px);
+  opacity: 0;
+  transition: transform .35s cubic-bezier(0.16, 1, 0.3, 1), opacity .3s ease;
+}
+.recipe-lightbox.active .recipe-lightbox-content {
+  transform: scale(1) translateY(0);
+  opacity: 1;
 }
 .recipe-lightbox-img {
   max-width: 100%;
@@ -651,13 +661,11 @@ h1 { font-size: clamp(2rem, 4.15vw, 4rem); letter-spacing: .035em; }
   height: auto;
   object-fit: contain;
   border-radius: 8px;
-  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.45);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  transform: scale(0.96);
-  transition: transform .25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.15);
 }
 .recipe-lightbox.active .recipe-lightbox-img {
-  transform: scale(1);
+  transform: none;
 }
 .recipe-lightbox-caption {
   margin-top: .85rem;
@@ -831,7 +839,7 @@ h1 { font-size: clamp(2rem, 4.15vw, 4rem); letter-spacing: .035em; }
 }
 .brand-identity-grid {
   display: grid;
-  grid-template-columns: minmax(260px, 340px) 1fr;
+  grid-template-columns: minmax(280px, 360px) 1fr;
   align-items: center;
   gap: clamp(2rem, 5vw, 4rem);
   margin-top: 2rem;
@@ -840,7 +848,7 @@ h1 { font-size: clamp(2rem, 4.15vw, 4rem); letter-spacing: .035em; }
   background: var(--paper, #fffdfa);
   border: 1px solid var(--line);
   border-radius: 14px;
-  padding: 2.2rem 1.8rem;
+  padding: 2.2rem 1.2rem;
   text-align: center;
   box-shadow: 0 4px 20px rgba(47, 32, 25, 0.05);
 }
@@ -853,9 +861,17 @@ h1 { font-size: clamp(2rem, 4.15vw, 4rem); letter-spacing: .035em; }
 }
 .brand-identity-caption {
   margin-top: 1.2rem;
-  font: 700 .85rem/1.4 var(--sans);
+  font: 700 .82rem/1.4 var(--sans);
   color: var(--muted);
-  letter-spacing: .08em;
+  letter-spacing: .05em;
+  white-space: nowrap;
+  display: block;
+}
+@media (max-width: 480px) {
+  .brand-identity-caption {
+    font-size: .75rem;
+    letter-spacing: .02em;
+  }
 }
 .brand-elements {
   display: flex;
@@ -896,5 +912,65 @@ h1 { font-size: clamp(2rem, 4.15vw, 4rem); letter-spacing: .035em; }
   .brand-identity-visual {
     max-width: 300px;
     margin: 0 auto;
+  }
+}
+
+/* Floating Back to Top Button */
+.back-to-top {
+  position: fixed;
+  right: 1.5rem;
+  bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px));
+  z-index: 98;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(253, 250, 244, 0.94);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--line);
+  color: var(--accent);
+  box-shadow: 0 4px 16px rgba(47, 32, 25, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(16px) scale(0.9);
+  transition: opacity .25s ease, transform .25s ease, background-color .2s ease, color .2s ease, border-color .2s ease, box-shadow .2s ease;
+  padding: 0;
+}
+.back-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0) scale(1);
+}
+.back-to-top:hover {
+  background: var(--accent);
+  color: #ffffff;
+  border-color: var(--accent);
+  box-shadow: 0 6px 20px rgba(183, 70, 36, 0.3);
+  transform: translateY(-3px) scale(1.06);
+}
+.back-to-top:active {
+  transform: translateY(0) scale(0.96);
+}
+.back-to-top svg {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+@media (max-width: 660px) {
+  .back-to-top {
+    right: 1.1rem;
+    bottom: calc(1.1rem + env(safe-area-inset-bottom, 0px));
+    width: 42px;
+    height: 42px;
+  }
+  .back-to-top svg {
+    width: 18px;
+    height: 18px;
   }
 }

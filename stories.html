@@ -131,7 +131,7 @@
           </div>
         </div>
         <figure class="genuine-feature-visual">
-          <video autoplay loop muted playsinline preload="auto" poster="assets/video/1001.webp" aria-label="阿婆手工切條紀錄影片">
+          <video autoplay loop muted playsinline webkit-playsinline preload="auto" poster="assets/video/1001.webp" aria-label="阿婆手工切條紀錄影片">
             <source src="assets/video/1001.webm" type="video/webm">
           </video>
           <figcaption>順應蘿蔔紋理順刀切，曬乾後才能咬出厚實脆感</figcaption>
@@ -247,7 +247,7 @@
       </div>
     </section>
   </main>
-  <footer class="site-footer"><div class="wrap footer"><div class="footer-brand"><img class="footer-logo" src="assets/logo-seal.png" alt="菜脯埕" width="34" height="34" loading="lazy"><div><strong>菜脯埕</strong><span> 臺中清水・在地耕作</span></div></div><div><a href="contact.html">聯絡菜脯埕</a> <a href="#top">回到頁首 ↑</a></div></div></footer>
+  <footer class="site-footer"><div class="wrap footer"><div class="footer-brand"><img class="footer-logo" src="assets/logo-seal.png" alt="菜脯埕" width="34" height="34" loading="lazy"><div><strong>菜脯埕</strong><span> 臺中清水・在地耕作</span></div></div><div><a href="contact.html">聯絡菜脯埕</a></div></div></footer>
   <script>
     (function () {
       const sidebar = document.getElementById('docsSidebar');
@@ -320,5 +320,7 @@
       articles.forEach(art => articleObserver.observe(art));
     })();
   </script>
+  <button type="button" class="back-to-top" id="backToTop" aria-label="回到頁面頂端" title="回到頂端"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 15l-6-6-6 6" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  <script src="assets/site.js" defer></script>
 </body>
 </html>
